@@ -8,3 +8,4 @@ services:
       - type: bind
         source: "./config.toml"
         target: "/app/config.toml"
+    network_mode: host
