@@ -1,0 +1,10 @@
+services:
+  tripd:
+    image: ghcr.io/tkytel/tripd:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: "./config.toml"
+        target: "/app/config.toml"
