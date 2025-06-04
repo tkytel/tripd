@@ -17,6 +17,18 @@
     <body>
         <h1>tripd</h1>
         <p>Telephony Routing Information Provider</p>
+        <h2>About me</h2>
+        <table id="about" style="font-family: monospace;">
+            <thead style="background-color: orange;">
+                <tr>
+                    <th>key</th>
+                    <th>value</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <h2>Peers</h2>
         <table id="peers" style="font-family: monospace;">
             <thead style="background-color: orange;">
                 <tr>
@@ -44,9 +56,29 @@
                     cellRtt.textContent = peer.rtt;
                 });
             }
+
+            async function fetchAbout() {
+                const res = await fetch('/api/about');
+                if (!res.ok) {
+                    throw new Error('Could not fetch about. Status: ' + res.status);
+                }
+                const json = await res.json();
+
+                const tbody = document.getElementById('about').getElementsByTagName('tbody')[0];
+                tbody.innerHTML = ''; // テーブルを初期化
+
+                Object.entries(json).forEach(([key, value]) => {
+                    const row = tbody.insertRow();
+                    const cellKey = row.insertCell(0);
+                    const cellValue = row.insertCell(1);
+                    cellKey.textContent = key;
+                    cellValue.textContent = value;
+                });
+            }
             
             window.addEventListener('DOMContentLoaded', () => {
                 fetchPeers()
+                fetchAbout()
             });
         </script>
     </body>

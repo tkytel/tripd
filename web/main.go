@@ -21,6 +21,7 @@ func Init() {
 
 	api := app.Group("/api")
 	api.Get("/peers", handler.HandlePeers)
+	api.Get("/about", handler.HandleAbout)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("views/index", fiber.Map{})
