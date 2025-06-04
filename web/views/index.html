@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>tripd</title>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>tripd</h1>
+        <p>Telephony Routing Information Provider</p>
+        <table id="peers" style="font-family: monospace;">
+            <thead style="background-color: orange;">
+                <tr>
+                    <th>identifier</th>
+                    <th>rtt</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <script>
+            async function fetchPeers() {
+                const data = await fetch('/api/peers');
+                if (!data.ok) {
+                    throw new Error('Could not fetch peers. Status: ' + res.status);
+                }
+                const json = await data.json();
+
+                const peers = document.getElementById('peers').getElementsByTagName('tbody')[0];
+                json.forEach(peer => {
+                    const row = peers.insertRow();
+                    const cellIdentifier = row.insertCell(0);
+                    const cellRtt = row.insertCell(1);
+                    cellIdentifier.textContent = peer.identifier;
+                    cellRtt.textContent = peer.rtt;
+                });
+            }
+            
+            window.addEventListener('DOMContentLoaded', () => {
+                fetchPeers()
+            });
+        </script>
+    </body>
+</html>
