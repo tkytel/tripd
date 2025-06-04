@@ -24,9 +24,6 @@ jobs:
           - platform: linux/arm/v7
             runner: ubuntu-24.04-arm
             matrix.qemu: true
-          - platform: linux/arm/v6
-            runner: ubuntu-24.04-arm
-            matrix.qemu: true
           - platform: linux/386
             runner: ubuntu-latest
             matrix.qemu: true
