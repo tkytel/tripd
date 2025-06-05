@@ -1,15 +1,20 @@
 package handler
 
 import (
+	"fmt"
 	"net"
 	"strings"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func HandleAbout(c *fiber.Ctx) error {
+	timezone, offset := time.Now().Zone()
+
 	res := About{
 		OutboundAddress: "",
+		Timezone:        fmt.Sprintf("%s (UTC%+d)", timezone, offset/3600),
 	}
 
 	ifaces, err := net.Interfaces()

@@ -32,6 +32,7 @@
         <table id="peers" style="font-family: monospace;">
             <thead style="background-color: orange;">
                 <tr>
+                    <th>measurable</th>
                     <th>identifier</th>
                     <th>rtt</th>
                 </tr>
@@ -39,6 +40,7 @@
             <tbody>
             </tbody>
         </table>
+
         <script>
             async function fetchPeers() {
                 const data = await fetch('/api/peers');
@@ -50,8 +52,10 @@
                 const peers = document.getElementById('peers').getElementsByTagName('tbody')[0];
                 json.forEach(peer => {
                     const row = peers.insertRow();
-                    const cellIdentifier = row.insertCell(0);
-                    const cellRtt = row.insertCell(1);
+                    const cellMeasurable = row.insertCell(0);
+                    const cellIdentifier = row.insertCell(1);
+                    const cellRtt = row.insertCell(2);
+                    cellMeasurable.textContent = peer.measurable;
                     cellIdentifier.textContent = peer.identifier;
                     cellRtt.textContent = peer.rtt;
                 });

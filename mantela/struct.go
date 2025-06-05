@@ -15,6 +15,8 @@ type MantelaAboutMe struct {
 	SipUsername     string   `json:"sipUsername"`
 	SipPassword     string   `json:"sipPassword"`
 	SipServer       string   `json:"sipServer"`
+	SipUri          []string `json:"sipUri"`
+	TripUri         []string `json:"tripUri"`
 }
 
 type MantelaExtension struct {

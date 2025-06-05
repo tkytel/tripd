@@ -5,13 +5,10 @@ import (
 	"errors"
 	"io"
 	"net/http"
-
-	"github.com/tkytel/tripd/config"
 )
 
-func FetchMantela() (Mantela, error) {
-	c := config.Get()
-	resp, err := http.Get(c.Mantela.Url)
+func FetchMantela(mantelaUrl string) (Mantela, error) {
+	resp, err := http.Get(mantelaUrl)
 	if err != nil {
 		return Mantela{}, err
 	}
