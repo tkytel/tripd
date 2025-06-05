@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"fmt"
+	"log"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,18 +9,21 @@ import (
 	"github.com/tkytel/tripd/mantela"
 )
 
+var Peers []Peer
+
 func HandlePeers(c *fiber.Ctx) error {
+	return c.JSON(Peers)
+}
+
+func RetrievePeers() {
 	cfg := config.Get()
 
 	res, err := mantela.FetchMantela(cfg.Mantela.Url)
 	if err != nil {
-		fmt.Println(err)
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to fetch peers",
-		})
+		log.Println("Failed to fetch mantela:", err)
 	}
 
-	peers := make([]Peer, 0, len(res.Providers))
+	p := make([]Peer, 0, len(res.Providers))
 
 	for _, v := range res.Providers {
 		if !strings.Contains(v.Identifier, "XXX") {
@@ -31,7 +34,7 @@ func HandlePeers(c *fiber.Ctx) error {
 				isMeasurable = true
 			}
 
-			peers = append(peers, Peer{
+			p = append(p, Peer{
 				Measurable: isMeasurable,
 				Identifier: v.Identifier,
 				Rtt:        nil,
@@ -39,5 +42,7 @@ func HandlePeers(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(peers)
+	Peers = p
+
+	log.Println("Updated peers with", len(Peers), "entries")
 }

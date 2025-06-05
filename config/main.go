@@ -12,7 +12,7 @@ var c Config
 func Init() {
 	d := read()
 	c = unmarshal(d)
-	log.Println("Successfully loaded configuration.")
+	log.Println("Successfully loaded configuration")
 }
 
 func Get() Config {
