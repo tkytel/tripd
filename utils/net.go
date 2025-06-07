@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"net"
 	"strings"
 )
@@ -43,12 +42,10 @@ func GetOutboundIP() (string, error) {
 				continue
 			}
 			res = ip.String()
-			fmt.Println(res)
 		}
 
 		// prioritize tailscale interface (#1)
 		if strings.Contains(i.Name, "tailscale") {
-			fmt.Println("break!")
 			break
 		}
 	}

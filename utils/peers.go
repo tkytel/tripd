@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+	"time"
 
 	probing "github.com/prometheus-community/pro-bing"
 	"github.com/tkytel/tripd/config"
@@ -13,6 +14,7 @@ import (
 )
 
 var Peers []Peer
+var LastMeasured time.Time
 
 func RetrievePeers() {
 	cfg := config.Get()
@@ -83,7 +85,7 @@ func RetrievePeers() {
 
 	wg.Wait()
 	Peers = p
-
+	LastMeasured = time.Now()
 	log.Println("Updated peers with", len(Peers), "entries")
 }
 

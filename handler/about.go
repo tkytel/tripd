@@ -62,6 +62,7 @@ End:
 		OutboundAddress: outboundAddress,
 		Timezone:        utils.GetTimezone(),
 		HopEnabled:      hopEnabled,
+		LastMeasured:    utils.LastMeasured,
 	}
 
 	return &resp, nil
