@@ -28,6 +28,7 @@
             <tbody>
             </tbody>
         </table>
+
         <h2>Peers</h2>
         <table id="peers" style="font-family: monospace;">
             <thead style="background-color: orange;">
@@ -41,6 +42,23 @@
             <tbody>
             </tbody>
         </table>
+
+        <h2>Endpoints</h2>
+        <ul>
+            <li>/api</li>
+            <ul>
+                <li>
+                    <a href="/api/peers">/peers</a>
+                </li>
+                <li>
+                    <a href="/api/about">/about</a>
+                </li>
+                <li>
+                    <a href="/api/metrics">/metrics</a>
+                </li>
+            </ul>
+            <li><a href="/metrics">/metrics</a></li>
+        </ul>
 
         <script>
             async function fetchPeers() {
