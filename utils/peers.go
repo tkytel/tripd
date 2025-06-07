@@ -104,6 +104,7 @@ func ExtractPeerAddress(sipUri string) string {
 }
 
 func PingPeer(fqdn string) (*probing.Statistics, error) {
+	cfg := config.Get()
 	pinger, err := probing.NewPinger(fqdn)
 	if err != nil {
 		return nil, err
@@ -115,7 +116,7 @@ func PingPeer(fqdn string) (*probing.Statistics, error) {
 	}
 	log.Println(msg)
 
-	pinger.Count = 20
+	pinger.Count = cfg.Ping.Count
 	err = pinger.Run()
 	if err != nil {
 		return nil, err
