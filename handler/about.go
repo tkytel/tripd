@@ -11,11 +11,20 @@ import (
 )
 
 func HandleAbout(c *fiber.Ctx) error {
-	outboundAddress, err := utils.GetOutboundIP()
+	res, err := GenerateAbout()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": fmt.Sprintf("Could not determine outbound address: %v", err),
+			"error": err,
 		})
+	}
+
+	return c.JSON(res)
+}
+
+func GenerateAbout() (*About, error) {
+	outboundAddress, err := utils.GetOutboundIP()
+	if err != nil {
+		return nil, fmt.Errorf("could not determine outbound address: %v", err)
 	}
 
 	cfg := config.Get()
@@ -55,5 +64,5 @@ End:
 		HopEnabled:      hopEnabled,
 	}
 
-	return c.JSON(resp)
+	return &resp, nil
 }
