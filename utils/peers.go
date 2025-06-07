@@ -56,7 +56,7 @@ func RetrievePeers() {
 				dest := ExtractPeerAddress(sipServer.AboutMe.SipUri[0])
 				ping, err := PingPeer(dest)
 				if err != nil {
-					log.Printf("Ignored host %v: %v", err, dest)
+					log.Printf("Ignored host %v: %v", dest, err)
 					isMeasurable = false
 					goto End
 				}
