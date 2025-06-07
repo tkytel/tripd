@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"regexp"
 	"strings"
@@ -48,11 +49,12 @@ func RetrievePeers() {
 			var loss *float64
 
 			if len(sipServer.AboutMe.SipUri) == 0 {
+				fmt.Println(sipServer.AboutMe.Identifier, len(sipServer.AboutMe.SipUri))
 				isMeasurable = false
 			}
 
 			if isMeasurable {
-				ping, err := PingPeer(ExtractPeerFQDN(sipServer.AboutMe.SipUri[0]))
+				ping, err := PingPeer(ExtractPeerAddress(sipServer.AboutMe.SipUri[0]))
 				if err != nil {
 					log.Println(err)
 					isMeasurable = false
@@ -85,10 +87,17 @@ func RetrievePeers() {
 	log.Println("Updated peers with", len(Peers), "entries")
 }
 
-func ExtractPeerFQDN(sipUrl string) string {
+func ExtractPeerAddress(sipUri string) string {
+	fmt.Println(sipUri)
 	re := regexp.MustCompile(`sip:([a-zA-Z0-9.-]+):\d+`)
-	match := re.FindStringSubmatch(sipUrl)
+	match := re.FindStringSubmatch(sipUri)
 
+	if len(match) > 1 {
+		return match[1]
+	}
+
+	re = regexp.MustCompile(`(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})`)
+	match = re.FindStringSubmatch(sipUri)
 	if len(match) > 1 {
 		return match[1]
 	}
