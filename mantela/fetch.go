@@ -1,6 +1,7 @@
 package mantela
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"io"
@@ -8,7 +9,12 @@ import (
 )
 
 func FetchMantela(mantelaUrl string) (Mantela, error) {
-	resp, err := http.Get(mantelaUrl)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	resp, err := client.Get(mantelaUrl)
 	if err != nil {
 		return Mantela{}, err
 	}
