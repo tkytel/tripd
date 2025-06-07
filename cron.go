@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/tkytel/tripd/handler"
+	"github.com/tkytel/tripd/utils"
 )
 
 func startBackgroundTasks() {
@@ -13,7 +13,7 @@ func startBackgroundTasks() {
 	for {
 		select {
 		case <-ticker.C:
-			handler.RetrievePeers()
+			utils.RetrievePeers()
 		}
 	}
 }

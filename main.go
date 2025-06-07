@@ -1,15 +1,19 @@
 package main
 
 import (
+	"log"
+
 	"github.com/tkytel/tripd/config"
-	"github.com/tkytel/tripd/handler"
+	"github.com/tkytel/tripd/utils"
 	"github.com/tkytel/tripd/web"
 )
 
 func main() {
 	config.Init()
 
-	handler.RetrievePeers()
+	log.Println("Initializing peers directory")
+	utils.RetrievePeers()
+
 	go startBackgroundTasks()
 
 	web.Init()
