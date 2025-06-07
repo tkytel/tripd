@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"log"
 	"regexp"
 	"strings"
@@ -49,7 +48,6 @@ func RetrievePeers() {
 			var loss *float64
 
 			if len(sipServer.AboutMe.SipUri) == 0 {
-				fmt.Println(sipServer.AboutMe.Identifier, len(sipServer.AboutMe.SipUri))
 				isMeasurable = false
 			}
 
@@ -88,7 +86,6 @@ func RetrievePeers() {
 }
 
 func ExtractPeerAddress(sipUri string) string {
-	fmt.Println(sipUri)
 	re := regexp.MustCompile(`sip:([a-zA-Z0-9.-]+):\d+`)
 	match := re.FindStringSubmatch(sipUri)
 
