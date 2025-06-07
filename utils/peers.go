@@ -110,7 +110,7 @@ func PingPeer(fqdn string) (*probing.Statistics, error) {
 
 	log.Println("Pinging to", pinger.IPAddr())
 
-	pinger.Count = 5
+	pinger.Count = 20
 	err = pinger.Run()
 	if err != nil {
 		return nil, err
