@@ -52,9 +52,10 @@ func RetrievePeers() {
 			}
 
 			if isMeasurable {
-				ping, err := PingPeer(ExtractPeerAddress(sipServer.AboutMe.SipUri[0]))
+				dest := ExtractPeerAddress(sipServer.AboutMe.SipUri[0])
+				ping, err := PingPeer(dest)
 				if err != nil {
-					log.Println(err)
+					log.Printf("Ignored host %v: %v", err, dest)
 					isMeasurable = false
 					goto End
 				}
@@ -86,10 +87,9 @@ func RetrievePeers() {
 }
 
 func ExtractPeerAddress(sipUri string) string {
-	re := regexp.MustCompile(`sip:([a-zA-Z0-9.-]+):\d+`)
+	re := regexp.MustCompile(`sip:(?:\/\/)?(?:[^@]+@)?([^:;]+)`)
 	match := re.FindStringSubmatch(sipUri)
-
-	if len(match) > 1 {
+	if len(match) >= 2 {
 		return match[1]
 	}
 
