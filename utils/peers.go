@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"regexp"
 	"strings"
@@ -108,7 +109,11 @@ func PingPeer(fqdn string) (*probing.Statistics, error) {
 		return nil, err
 	}
 
-	log.Println("Pinging to", pinger.IPAddr())
+	msg := fmt.Sprintf("Pinging to %v", pinger.IPAddr())
+	if fqdn != pinger.IPAddr().IP.String() {
+		msg += fmt.Sprintf(" (%v)", fqdn)
+	}
+	log.Println(msg)
 
 	pinger.Count = 20
 	err = pinger.Run()
