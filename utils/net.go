@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"net"
 	"strings"
 )
@@ -28,16 +29,27 @@ func GetOutboundIP() (string, error) {
 				ip = v.IP
 			}
 
+			// ignore Docker's interface
+			if strings.Contains(i.Name, "docker") {
+				continue
+			}
+			// ignore link-local address
+			if ip.IsLinkLocalUnicast() {
+				continue
+			}
+
 			if ip == nil || ip.To4() == nil {
 				// IPv6 or invalid address. skipping
 				continue
 			}
 			res = ip.String()
+			fmt.Println(res)
+		}
 
-			// prioritize tailscale interface (#1)
-			if strings.Contains(i.Name, "tailscale") {
-				break
-			}
+		// prioritize tailscale interface (#1)
+		if strings.Contains(i.Name, "tailscale") {
+			fmt.Println("break!")
+			break
 		}
 	}
 
