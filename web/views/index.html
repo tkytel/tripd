@@ -34,7 +34,8 @@
                 <tr>
                     <th>measurable</th>
                     <th>identifier</th>
-                    <th>rtt</th>
+                    <th>rtt [ms]</th>
+                    <th>loss [%]</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,9 +56,12 @@
                     const cellMeasurable = row.insertCell(0);
                     const cellIdentifier = row.insertCell(1);
                     const cellRtt = row.insertCell(2);
+                    const cellLoss = row.insertCell(3);
+                    
                     cellMeasurable.textContent = peer.measurable;
                     cellIdentifier.textContent = peer.identifier;
                     cellRtt.textContent = peer.rtt;
+                    cellLoss.textContent = peer.loss;
                 });
             }
 

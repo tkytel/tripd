@@ -6,6 +6,7 @@ import (
 	"strings"
 	"sync"
 
+	probing "github.com/prometheus-community/pro-bing"
 	"github.com/tkytel/tripd/config"
 	"github.com/tkytel/tripd/mantela"
 )
@@ -36,17 +37,40 @@ func RetrievePeers() {
 				return
 			}
 
-			isMeasurable := false
+			isMeasurable := true
 			sipServer, _ := mantela.FetchMantela(v.Mantela)
 
-			if sipServer.AboutMe.SipServer != "" {
-				isMeasurable = true
+			if sipServer.AboutMe.Identifier == res.AboutMe.Identifier {
+				return
 			}
 
+			var rtt *int64
+			var loss *float64
+
+			if len(sipServer.AboutMe.SipUri) == 0 {
+				isMeasurable = false
+			}
+
+			if isMeasurable {
+				ping, err := PingPeer(ExtractPeerFQDN(sipServer.AboutMe.SipUri[0]))
+				if err != nil {
+					log.Println(err)
+					isMeasurable = false
+					goto End
+				}
+
+				rttVal := ping.AvgRtt.Milliseconds()
+				lossVal := ping.PacketLoss
+				rtt = &rttVal
+				loss = &lossVal
+			}
+
+		End:
 			peer := Peer{
 				Measurable: isMeasurable,
 				Identifier: v.Identifier,
-				Rtt:        nil,
+				Rtt:        rtt,
+				Loss:       loss,
 			}
 
 			mutex.Lock()
@@ -70,4 +94,21 @@ func ExtractPeerFQDN(sipUrl string) string {
 	}
 
 	return ""
+}
+
+func PingPeer(fqdn string) (*probing.Statistics, error) {
+	pinger, err := probing.NewPinger(fqdn)
+	if err != nil {
+		return nil, err
+	}
+
+	log.Println("Pinging to", pinger.IPAddr())
+
+	pinger.Count = 5
+	err = pinger.Run()
+	if err != nil {
+		return nil, err
+	}
+
+	return pinger.Statistics(), nil
 }
