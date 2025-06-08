@@ -29,18 +29,19 @@ func RetrievePeers() {
 		wg    sync.WaitGroup
 	)
 
+	sem := make(chan struct{}, 3)
+
 	for _, v := range res.Providers {
 		v := v
 		wg.Add(1)
 
 		go func() {
 			defer wg.Done()
+			sem <- struct{}{}
+			defer func() { <-sem }()
 
 			// ignore the provider which is not mantela available
-			if strings.Contains(v.Identifier, "XXX") {
-				return
-			}
-			if v.Mantela == "" {
+			if strings.Contains(v.Identifier, "XXX") || v.Mantela == "" {
 				return
 			}
 
