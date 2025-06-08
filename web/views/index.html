@@ -108,7 +108,7 @@
                 const json = await res.json();
 
                 const tbody = document.getElementById('about').getElementsByTagName('tbody')[0];
-                tbody.innerHTML = ''; // テーブルを初期化
+                tbody.innerHTML = '';
 
                 Object.entries(json).forEach(([key, value]) => {
                     const row = tbody.insertRow();
