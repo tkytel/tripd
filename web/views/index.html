@@ -87,10 +87,10 @@
                     
                     cellMeasurable.textContent = peer.measurable;
                     cellIdentifier.textContent = peer.identifier;
-                    cellRtt.textContent = peer.rtt.toFixed(3);
-                    cellMin.textContent = peer.min.toFixed(3);
-                    cellMax.textContent = peer.max.toFixed(3);
-                    cellMdev.textContent = peer.mdev.toFixed(3);
+                    cellRtt.textContent = peer.rtt?.toFixed(3);
+                    cellMin.textContent = peer.min?.toFixed(3);
+                    cellMax.textContent = peer.max?.toFixed(3);
+                    cellMdev.textContent = peer.mdev?.toFixed(3);
                     cellLoss.textContent = peer.loss;
                     cellRtt.style.textAlign = "right";
                     cellMin.style.textAlign = "right";
