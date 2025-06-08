@@ -48,7 +48,7 @@ func RetrievePeers() {
 			isMeasurable := true
 			sipServer, err := mantela.FetchMantela(v.Mantela)
 			if err != nil {
-				log.Println("Failed to fetch mantela:", err)
+				log.Printf("Failed to fetch mantela (%v): %v", v.Identifier, err)
 				isMeasurable = false
 			}
 
