@@ -9,3 +9,5 @@ services:
         source: "./config.toml"
         target: "/app/config.toml"
     network_mode: host
+    cap_add:
+      - NET_ADMIN
