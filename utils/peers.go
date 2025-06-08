@@ -36,7 +36,11 @@ func RetrievePeers() {
 		go func() {
 			defer wg.Done()
 
+			// ignore the provider which is not mantela available
 			if strings.Contains(v.Identifier, "XXX") {
+				return
+			}
+			if v.Mantela == "" {
 				return
 			}
 
@@ -44,8 +48,11 @@ func RetrievePeers() {
 			sipServer, err := mantela.FetchMantela(v.Mantela)
 			if err != nil {
 				log.Println("Failed to fetch mantela:", err)
+				isMeasurable = false
 			}
 
+			// if this provider is me, skipping
+			// this happens when I am hoppable
 			if sipServer.AboutMe.Identifier == res.AboutMe.Identifier {
 				return
 			}
@@ -54,7 +61,14 @@ func RetrievePeers() {
 			var loss *float64
 
 			if len(sipServer.AboutMe.SipUri) == 0 {
-				isMeasurable = false
+				if sipServer.AboutMe.SipServer != "" {
+					sipServer.AboutMe.SipUri = append(
+						sipServer.AboutMe.SipUri,
+						sipServer.AboutMe.SipServer,
+					)
+				} else {
+					isMeasurable = false
+				}
 			}
 
 			if isMeasurable {
