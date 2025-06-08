@@ -3,6 +3,9 @@ package utils
 type Peer struct {
 	Measurable bool     `json:"measurable"`
 	Identifier string   `json:"identifier"`
-	Rtt        *int64   `json:"rtt"`
+	Rtt        *float64 `json:"rtt"`
 	Loss       *float64 `json:"loss"`
+	Min        *float64 `json:"min"`
+	Max        *float64 `json:"max"`
+	Mdev       *float64 `json:"mdev"`
 }

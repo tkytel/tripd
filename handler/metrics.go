@@ -61,7 +61,7 @@ func GenerateMetrics() string {
 		if vp.Loss != nil {
 			loss = *vp.Loss
 		}
-		rtt := (int64)(0)
+		rtt := (float64)(0)
 		if vp.Loss != nil {
 			rtt = *vp.Rtt
 		}

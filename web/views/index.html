@@ -39,6 +39,9 @@
                     <th>measurable</th>
                     <th>identifier</th>
                     <th>rtt [ms]</th>
+                    <th>min [ms]</th>
+                    <th>max [ms]</th>
+                    <th>mdev [ms]</th>
                     <th>loss [%]</th>
                 </tr>
             </thead>
@@ -77,11 +80,17 @@
                     const cellMeasurable = row.insertCell(0);
                     const cellIdentifier = row.insertCell(1);
                     const cellRtt = row.insertCell(2);
-                    const cellLoss = row.insertCell(3);
+                    const cellMin = row.insertCell(3);
+                    const cellMax = row.insertCell(4);
+                    const cellMdev = row.insertCell(5);
+                    const cellLoss = row.insertCell(6);
                     
                     cellMeasurable.textContent = peer.measurable;
                     cellIdentifier.textContent = peer.identifier;
                     cellRtt.textContent = peer.rtt;
+                    cellMin.textContent = peer.min;
+                    cellMax.textContent = peer.max;
+                    cellMdev.textContent = peer.mdev;
                     cellLoss.textContent = peer.loss;
                 });
             }

@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"log"
+	"math"
 	"regexp"
 	"strings"
 	"sync"
@@ -58,8 +59,11 @@ func RetrievePeers() {
 				return
 			}
 
-			var rtt *int64
+			var rtt *float64
 			var loss *float64
+			var min *float64
+			var max *float64
+			var mdev *float64
 
 			if len(sipServer.AboutMe.SipUri) == 0 {
 				if sipServer.AboutMe.SipServer != "" {
@@ -81,10 +85,22 @@ func RetrievePeers() {
 					goto End
 				}
 
-				rttVal := ping.AvgRtt.Milliseconds()
+				rttVal := float64(ping.AvgRtt.Microseconds()) * 0.001
 				lossVal := ping.PacketLoss
-				rtt = &rttVal
-				loss = &lossVal
+				maxVal := float64(ping.MaxRtt.Microseconds()) * 0.001
+				minVal := float64(ping.MinRtt.Microseconds()) * 0.001
+				mdevVal := float64(ping.StdDevRtt.Microseconds()) * 0.001
+				roundedRtt := math.Round(rttVal*1000) / 1000
+				roundedLoss := math.Round(lossVal*1000) / 1000
+				roundedMax := math.Round(maxVal*1000) / 1000
+				roundedMin := math.Round(minVal*1000) / 1000
+				roundedMdev := math.Round(mdevVal*1000) / 1000
+
+				rtt = &roundedRtt
+				loss = &roundedLoss
+				max = &roundedMax
+				min = &roundedMin
+				mdev = &roundedMdev
 			}
 
 		End:
@@ -93,6 +109,9 @@ func RetrievePeers() {
 				Identifier: v.Identifier,
 				Rtt:        rtt,
 				Loss:       loss,
+				Min:        min,
+				Max:        max,
+				Mdev:       mdev,
 			}
 
 			mutex.Lock()
