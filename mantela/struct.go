@@ -1,5 +1,10 @@
 package mantela
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
 type Mantela struct {
 	Schema     string             `json:"$schema"`
 	Version    string             `json:"version"`
@@ -8,15 +13,33 @@ type Mantela struct {
 	Providers  []MantelaProvider  `json:"providers"`
 }
 
+type PreferredPrefixType []string
+
+func (p *PreferredPrefixType) UnmarshalJSON(data []byte) error {
+	var single string
+	if err := json.Unmarshal(data, &single); err == nil {
+		*p = []string{single}
+		return nil
+	}
+
+	var list []string
+	if err := json.Unmarshal(data, &list); err == nil {
+		*p = list
+		return nil
+	}
+
+	return fmt.Errorf("PreferredPrefix: invalid format")
+}
+
 type MantelaAboutMe struct {
-	Identifier      string   `json:"identifier"`
-	Name            string   `json:"name"`
-	PreferredPrefix []string `json:"preferredPrefix"`
-	SipUsername     string   `json:"sipUsername"`
-	SipPassword     string   `json:"sipPassword"`
-	SipServer       string   `json:"sipServer"`
-	SipUri          []string `json:"sipUri"`
-	TripUri         []string `json:"tripUri"`
+	Identifier      string              `json:"identifier"`
+	Name            string              `json:"name"`
+	PreferredPrefix PreferredPrefixType `json:"preferredPrefix"`
+	SipUsername     string              `json:"sipUsername"`
+	SipPassword     string              `json:"sipPassword"`
+	SipServer       string              `json:"sipServer"`
+	SipUri          []string            `json:"sipUri"`
+	TripUri         []string            `json:"tripUri"`
 }
 
 type MantelaExtension struct {
