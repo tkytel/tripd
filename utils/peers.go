@@ -149,6 +149,7 @@ func PingPeer(fqdn string) (*probing.Statistics, error) {
 		return nil, err
 	}
 	pinger.SetPrivileged(true)
+	pinger.Timeout = 3 * time.Second
 
 	msg := fmt.Sprintf("Pinging to %v", pinger.IPAddr())
 	if fqdn != pinger.IPAddr().IP.String() {
