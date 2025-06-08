@@ -2,4 +2,4 @@
     url = "https://www.yude.jp.eu.org/.well-known/mantela.json"
 
 [ping]
-    count = 20
+    count = 5
