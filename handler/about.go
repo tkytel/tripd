@@ -18,7 +18,11 @@ func HandleAbout(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(res)
+	if Ready {
+		return c.JSON(res)
+	} else {
+		return c.SendStatus(503)
+	}
 }
 
 func GenerateAbout() (*About, error) {

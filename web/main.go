@@ -43,7 +43,11 @@ func Init() {
 	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Render("views/index", fiber.Map{})
+		if handler.Ready {
+			return c.Render("views/index", fiber.Map{})
+		} else {
+			return c.SendStatus(503)
+		}
 	})
 
 	log.Fatal(app.Listen(":3000"))

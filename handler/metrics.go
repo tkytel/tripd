@@ -9,7 +9,11 @@ import (
 )
 
 func HandleMetrics(c *fiber.Ctx) error {
-	return c.SendString(GenerateMetrics())
+	if Ready {
+		return c.SendString(GenerateMetrics())
+	} else {
+		return c.SendStatus(503)
+	}
 }
 
 func GenerateMetrics() string {

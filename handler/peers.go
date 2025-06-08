@@ -6,5 +6,9 @@ import (
 )
 
 func HandlePeers(c *fiber.Ctx) error {
-	return c.JSON(utils.Peers)
+	if Ready {
+		return c.JSON(utils.Peers)
+	} else {
+		return c.SendStatus(503)
+	}
 }
