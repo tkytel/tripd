@@ -10,12 +10,12 @@ TRIP daemon - Telephony Routing Information Provider
 
 * This software attempts to send an "unprivileged" ping via UDP
     * On Linux, this must be enabled with the following `sysctl` command.
-        ```
-        sudo sysctl -w net.ipv4.ping_group_range="0 2147483647"
+        ```sh
+        $ sudo sysctl -w net.ipv4.ping_group_range="0 2147483647"
         ```
 * Create `config.toml` by referring to `config.example.toml`
     * Place it in the same directory as `compose.yaml`.
-        ```
+        ```sh
         $ tree
         .
         ├── config.toml
@@ -26,6 +26,13 @@ TRIP daemon - Telephony Routing Information Provider
     $ docker compose up -d
     ```
 * You can also expose tripd service to the Internet via tunneling service (e.g. Cloudflare Tunnel)
+
+## Update
+
+```sh
+$ docker compose pull
+$ docker compose up -d
+```
 
 ## License
 
