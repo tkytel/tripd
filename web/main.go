@@ -11,6 +11,9 @@ import (
 	"github.com/tkytel/tripd/handler"
 )
 
+//go:embed static/*
+var staticfs embed.FS
+
 //go:embed views/*
 var viewsfs embed.FS
 
@@ -29,6 +32,15 @@ func Init() {
 	api.Get("/peers", handler.HandlePeers)
 	api.Get("/about", handler.HandleAbout)
 	api.Get("/metrics", handler.HandleMetrics)
+
+	app.Get("/static/*", func(c *fiber.Ctx) error {
+		filePath := c.Params("*")
+		data, err := staticfs.ReadFile("static/" + filePath)
+		if err != nil {
+			return c.SendStatus(fiber.StatusNotFound)
+		}
+		return c.Type(filePath).Send(data)
+	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("views/index", fiber.Map{})
