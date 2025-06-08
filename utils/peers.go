@@ -129,6 +129,7 @@ func PingPeer(fqdn string) (*probing.Statistics, error) {
 	if err != nil {
 		return nil, err
 	}
+	pinger.SetPrivileged(true)
 
 	msg := fmt.Sprintf("Pinging to %v", pinger.IPAddr())
 	if fqdn != pinger.IPAddr().IP.String() {
