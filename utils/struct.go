@@ -8,4 +8,7 @@ type Peer struct {
 	Min        *float64 `json:"min"`
 	Max        *float64 `json:"max"`
 	Mdev       *float64 `json:"mdev"`
+	Responding *bool    `json:"responding"`
 }
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

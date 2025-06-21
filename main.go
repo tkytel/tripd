@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"math/rand"
+	"time"
 
 	"github.com/tkytel/tripd/config"
 	"github.com/tkytel/tripd/handler"
@@ -10,6 +12,7 @@ import (
 )
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	handler.Ready = false
 	config.Init()
 

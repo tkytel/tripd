@@ -43,6 +43,7 @@
                     <th>max [ms]</th>
                     <th>mdev [ms]</th>
                     <th>loss [%]</th>
+                    <th>responding</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,6 +85,7 @@
                     const cellMax = row.insertCell(4);
                     const cellMdev = row.insertCell(5);
                     const cellLoss = row.insertCell(6);
+                    const cellResponding = row.insertCell(7);
                     
                     cellMeasurable.textContent = peer.measurable;
                     cellIdentifier.textContent = peer.identifier;
@@ -92,6 +94,8 @@
                     cellMax.textContent = peer.max?.toFixed(3);
                     cellMdev.textContent = peer.mdev?.toFixed(3);
                     cellLoss.textContent = peer.loss;
+                    cellResponding.textContent = peer.responding;
+
                     cellRtt.style.textAlign = "right";
                     cellMin.style.textAlign = "right";
                     cellMax.style.textAlign = "right";

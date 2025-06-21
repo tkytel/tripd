@@ -64,6 +64,7 @@ func RetrievePeers() {
 			var min *float64
 			var max *float64
 			var mdev *float64
+			var responding *bool
 
 			if len(sipServer.AboutMe.SipUri) == 0 {
 				if sipServer.AboutMe.SipServer != "" {
@@ -80,9 +81,26 @@ func RetrievePeers() {
 				dest := ExtractPeerAddress(sipServer.AboutMe.SipUri[0])
 				ping, err := PingPeer(dest)
 				if err != nil {
-					log.Printf("Ignored host %v: %v", dest, err)
+					log.Printf("[L3 pinger] Ignored host %v: %v", dest, err)
 					isMeasurable = false
 					goto End
+				}
+
+				var domain, port string
+				if strings.Contains(sipServer.AboutMe.SipUri[0], "sip:") {
+					domain, port, err = ParseSipURI(sipServer.AboutMe.SipUri[0])
+					if err != nil {
+						log.Printf("[L7 pinger] Ignored host %v: %v", dest, err)
+						goto End
+					}
+				} else {
+					domain = sipServer.AboutMe.SipUri[0]
+					port = "5060"
+				}
+
+				options, err := SendSipOptions(domain, port)
+				if err != nil {
+					log.Println(err)
 				}
 
 				rttVal := float64(ping.AvgRtt.Microseconds()) * 0.001
@@ -101,6 +119,7 @@ func RetrievePeers() {
 				max = &roundedMax
 				min = &roundedMin
 				mdev = &roundedMdev
+				responding = &options
 			}
 
 		End:
@@ -112,6 +131,7 @@ func RetrievePeers() {
 				Min:        min,
 				Max:        max,
 				Mdev:       mdev,
+				Responding: responding,
 			}
 
 			mutex.Lock()
